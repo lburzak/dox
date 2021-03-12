@@ -1,0 +1,3 @@
+$('#sidebar').resizable({
+  handles: 'e'
+});
