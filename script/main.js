@@ -12,6 +12,10 @@ class ScratchRepository {
         this.storage["scratches"] = JSON.stringify(val)
     }
 
+    get nextId() {
+        return this.storage["id_scratches"] = parseInt(this.storage["id_scratches"]) + 1
+    }
+
     findAll() {
         return [...this.data];
     }
@@ -22,15 +26,22 @@ class ScratchRepository {
 
     removeOne(id) {
         this.data = this.data.filter(scratch => scratch.id !== id);
-        this.listeners.forEach(this._emitChangedData.bind(this))
+        this._emitChange();
+    }
+
+    createOne(content) {
+        const scratch = { id: this.nextId, content };
+        this.data = this.data.concat(scratch);
+        this._emitChange()
     }
 
     subscribe(onEvent) {
-        this.listeners.push(onEvent)
+        this.listeners.push(onEvent);
     }
 
-    _emitChangedData(listener) {
-        listener([...this.data])
+    _emitChange() {
+        const changedData = [...this.data]
+        this.listeners.forEach(listener => listener(changedData))
     }
 }
 
@@ -85,6 +96,15 @@ $(document).ready(function () {
                 scratchRepository.removeOne(id)
                 $(this).append(scratch.content);
             }
+        }
+    })
+
+    $('#scratch-input').bind("submit", function() {
+        scratchRepository.createOne($(this).val());
+        $(this).val("")
+    }).keypress(function (e) {
+        if ((e.keyCode === 10 || e.keyCode === 13) && e.ctrlKey) {
+            $(this).trigger("submit")
         }
     })
 })
