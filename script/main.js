@@ -1,14 +1,17 @@
 class ScratchRepository {
     data = [
-        { id: 0, content: "This is some scratch text" },
-        { id: 1, content: "Lorem ipsum dolor sit amet, consectetur adipiscing."},
-        { id: 2, content: "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nunc sit amet imperdiet nisi, ut\n" +
-                "    hendrerit magna.\n" },
-        { id: 3, content: "Hello" }
+        {id: 0, content: "This is some scratch text"},
+        {id: 1, content: "Lorem ipsum dolor sit amet, consectetur adipiscing."},
+        {
+            id: 2,
+            content: "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nunc sit amet imperdiet nisi, ut\n" +
+                "    hendrerit magna.\n"
+        },
+        {id: 3, content: "Hello"}
     ];
 
     findAll() {
-        return [ ...this.data ];
+        return [...this.data];
     }
 
     findOne(id) {
