@@ -1,0 +1,21 @@
+.icon {
+    display: inline-block;
+    height: 100%;
+    width: 40px;
+    background-size: 25px;
+    background-repeat: no-repeat;
+    background-position: center;
+}
+
+.icon-doc {
+    background-image: url("../assets/doc.svg");
+}
+
+.icon-scratch {
+    background-image: url("../assets/scratch.svg");
+}
+
+.icon-help {
+    margin-left: auto;
+    background-image: url("../assets/icon-help.svg");
+}
