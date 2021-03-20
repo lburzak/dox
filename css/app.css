@@ -71,3 +71,27 @@
 #canvas-input:focus {
     outline: none;
 }
+
+#files-nav {
+    display: flex;
+    flex-direction: row;
+    border-width: 0 0 1px 0;
+    border-style: solid;
+}
+
+#files-nav button {
+    flex: 1;
+    height: 28px;
+    border-width: 0 1px 0 0;
+    font-variant: titling-caps;
+
+    transition-duration: 300ms;
+}
+
+#files-nav button:focus {
+    outline: none;
+}
+
+#files-nav button:last-of-type {
+    border-width: 0;
+}

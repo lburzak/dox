@@ -9,6 +9,10 @@
     border-color: hsla(0, 0%, 0%, 0.1);
 }
 
+.light-theme-side button:hover {
+    background-color: hsl(0, 0%, 94%);
+}
+
 .light-theme-editor {
     background-color: hsl(0, 0%, 100%);
     border-color: hsla(0, 0%, 0%, 0.1);
