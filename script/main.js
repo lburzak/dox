@@ -1,14 +1,16 @@
+class DataEvent {
+    Type = "test"
+    constructor(type, payload) {
+        this.type = type
+        this.payload = payload
+    }
+}
+
 class ScratchRepository {
-    data = [
-        {id: 0, content: "This is some scratch text"},
-        {id: 1, content: "Lorem ipsum dolor sit amet, consectetur adipiscing."},
-        {
-            id: 2,
-            content: "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nunc sit amet imperdiet nisi, ut\n" +
-                "    hendrerit magna.\n"
-        },
-        {id: 3, content: "Hello"}
-    ];
+    constructor(data) {
+        this.data = [...data];
+        this.listeners = [];
+    }
 
     findAll() {
         return [...this.data];
@@ -20,6 +22,14 @@ class ScratchRepository {
 
     removeOne(id) {
         this.data = this.data.filter(scratch => scratch.id !== id);
+
+        this.listeners.forEach(onEvent => {
+            onEvent({ type: "change", payload: [...this.data] })
+        })
+    }
+
+    subscribe(onEvent) {
+        this.listeners.push(onEvent)
     }
 }
 
@@ -32,11 +42,29 @@ function createScratch(scratch) {
     }).data("id", scratch.id)
 }
 
-$(document).ready(function () {
-    const scratchRepository = new ScratchRepository();
+function showScratch(scratch) {
+    $("#items-list").append(createScratch(scratch))
+}
 
-    scratchRepository.findAll().forEach(scratch => {
-        createScratch(scratch).appendTo("#sidebar")
+$(document).ready(function () {
+    const scratchRepository = new ScratchRepository([
+        {id: 0, content: "This is some scratch text"},
+        {id: 1, content: "Lorem ipsum dolor sit amet, consectetur adipiscing."},
+        {
+            id: 2,
+            content: "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nunc sit amet imperdiet nisi, ut\n" +
+                "    hendrerit magna.\n"
+        },
+        {id: 3, content: "Hello"}
+    ]);
+
+    scratchRepository.findAll().forEach(showScratch)
+
+    scratchRepository.subscribe(event => {
+        if (event.type === "change") {
+            $("#items-list").html("")
+            event.payload.forEach(showScratch)
+        }
     })
 
     $('#sidebar').resizable({
