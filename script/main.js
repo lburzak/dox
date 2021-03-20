@@ -1,7 +1,15 @@
 class ScratchRepository {
-    constructor(data) {
-        this.data = [...data];
+    constructor(storage) {
+        this.storage = storage;
         this.listeners = [];
+    }
+
+    get data() {
+        return JSON.parse(this.storage["scratches"])
+    }
+
+    set data(val) {
+        this.storage["scratches"] = JSON.stringify(val)
     }
 
     findAll() {
@@ -59,16 +67,7 @@ class ScratchList {
 }
 
 $(document).ready(function () {
-    const scratchRepository = new ScratchRepository([
-        {id: 0, content: "This is some scratch text"},
-        {id: 1, content: "Lorem ipsum dolor sit amet, consectetur adipiscing."},
-        {
-            id: 2,
-            content: "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nunc sit amet imperdiet nisi, ut\n" +
-                "    hendrerit magna.\n"
-        },
-        {id: 3, content: "Hello"}
-    ]);
+    const scratchRepository = new ScratchRepository(localStorage);
 
     const scratchList = new ScratchList(scratchRepository);
     scratchList.showInContainer($("#items-list"))
