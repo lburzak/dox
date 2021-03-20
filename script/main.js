@@ -1,11 +1,3 @@
-class DataEvent {
-    Type = "test"
-    constructor(type, payload) {
-        this.type = type
-        this.payload = payload
-    }
-}
-
 class ScratchRepository {
     constructor(data) {
         this.data = [...data];
@@ -33,17 +25,40 @@ class ScratchRepository {
     }
 }
 
-function createScratch(scratch) {
-    return $("<div/>", {
-        class: "card light-theme-card",
-        html: scratch.content
-    }).draggable({
-        revert: true
-    }).data("id", scratch.id)
-}
+class ScratchList {
+    constructor(scratchRepository) {
+        this.scratchRepository = scratchRepository
+        this.container = null
+    }
 
-function showScratch(scratch) {
-    $("#items-list").append(createScratch(scratch))
+    showInContainer(container) {
+        this.container = container
+        this.scratchRepository.findAll().forEach(this._showScratch.bind(this))
+
+        this.scratchRepository.subscribe(event => {
+            if (event.type === "change") {
+                this._onDataChange(event.payload)
+            }
+        })
+    }
+
+    _createScratch(scratch) {
+        return $("<div/>", {
+            class: "card light-theme-card",
+            html: scratch.content
+        }).draggable({
+            revert: true
+        }).data("id", scratch.id)
+    }
+
+    _showScratch(scratch) {
+        this.container.append(this._createScratch(scratch))
+    }
+
+    _onDataChange(newData) {
+        this.container.html("")
+        newData.forEach(this._showScratch.bind(this))
+    }
 }
 
 $(document).ready(function () {
@@ -58,14 +73,8 @@ $(document).ready(function () {
         {id: 3, content: "Hello"}
     ]);
 
-    scratchRepository.findAll().forEach(showScratch)
-
-    scratchRepository.subscribe(event => {
-        if (event.type === "change") {
-            $("#items-list").html("")
-            event.payload.forEach(showScratch)
-        }
-    })
+    const scratchList = new ScratchList(scratchRepository);
+    scratchList.showInContainer($("#items-list"))
 
     $('#sidebar').resizable({
         handles: 'e'
