@@ -22,7 +22,7 @@ class ScratchRepository {
 
 function createScratch(scratch) {
     return $("<div/>", {
-        class: "card",
+        class: "card light-theme-card",
         html: scratch.content
     }).draggable({
         revert: true

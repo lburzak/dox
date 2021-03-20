@@ -1,6 +1,6 @@
 <svg width="256" height="256" viewBox="0 0 256 256" fill="none" xmlns="http://www.w3.org/2000/svg">
-<path d="M63.7007 26.4631L63.8251 26.3525L63.9432 26.2351L84.2999 6H215V250H41V46.653L63.7007 26.4631Z" stroke="#666666" stroke-width="12"/>
-<path d="M73 85H183" stroke="#666666" stroke-width="12"/>
-<path d="M73 132H183" stroke="#666666" stroke-width="12"/>
-<path d="M73 180H183" stroke="#666666" stroke-width="12"/>
+<path d="M63.7007 26.4631L63.8251 26.3525L63.9432 26.2351L84.2999 6H215V250H41V46.653L63.7007 26.4631Z" stroke="#000000" stroke-width="12"/>
+<path d="M73 85H183" stroke="#000000" stroke-width="12"/>
+<path d="M73 132H183" stroke="#000000" stroke-width="12"/>
+<path d="M73 180H183" stroke="#000000" stroke-width="12"/>
 </svg>
