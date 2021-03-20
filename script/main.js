@@ -14,14 +14,15 @@ class ScratchRepository {
 
     removeOne(id) {
         this.data = this.data.filter(scratch => scratch.id !== id);
-
-        this.listeners.forEach(onEvent => {
-            onEvent({ type: "change", payload: [...this.data] })
-        })
+        this.listeners.forEach(this._emitChangedData.bind(this))
     }
 
     subscribe(onEvent) {
         this.listeners.push(onEvent)
+    }
+
+    _emitChangedData(listener) {
+        listener([...this.data])
     }
 }
 
@@ -33,13 +34,9 @@ class ScratchList {
 
     showInContainer(container) {
         this.container = container
-        this.scratchRepository.findAll().forEach(this._showScratch.bind(this))
 
-        this.scratchRepository.subscribe(event => {
-            if (event.type === "change") {
-                this._onDataChange(event.payload)
-            }
-        })
+        this.scratchRepository.findAll().forEach(this._showScratch.bind(this))
+        this.scratchRepository.subscribe(this._onDataChange.bind(this))
     }
 
     _createScratch(scratch) {
