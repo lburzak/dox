@@ -63,7 +63,17 @@ class ScratchList {
             class: "card light-theme-card",
             html: scratch.content
         }).draggable({
-            revert: true
+            helper: function () {
+                return $("<div/>", {
+                    class: "icon icon-scratch",
+                    style: "height: 40px"
+                })
+            },
+            opacity: 0.5,
+            cursorAt: {
+                top: 30,
+                left: 30
+            }
         }).data("id", scratch.id)
     }
 
