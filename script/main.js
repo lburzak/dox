@@ -48,14 +48,14 @@ class ScratchRepository {
 class ScratchList {
     constructor(scratchRepository) {
         this.scratchRepository = scratchRepository
-        this.container = null
-    }
-
-    showInContainer(container) {
-        this.container = container
+        this.container = this._buildContainer()
 
         this.scratchRepository.findAll().forEach(this._showScratch.bind(this))
         this.scratchRepository.subscribe(this._onDataChange.bind(this))
+    }
+
+    get root() {
+        return this.container
     }
 
     _createScratch(scratch) {
@@ -85,23 +85,34 @@ class ScratchList {
         this.container.html("")
         newData.forEach(this._showScratch.bind(this))
     }
+
+    _buildContainer() {
+        return $("<div/>", { id: "items-list" })
+    }
 }
 
 class InputBoxController {
+    constructor() {
+        this.element = this._build()
+    }
+
+    get root() {
+        return this.element
+    }
+
     onSubmit() {}
     onKeyEvent(event) {}
 
-    attach(element) {
-        this.element = element
-
-        this.element
+    _build() {
+        return $("<textarea\>", {
+            id: "scratch-input",
+            class: "light-theme-editor"
+        })
             .bind("submit", function () {
                 const content = $(this.element).val()
                 $(this.element).val("")
                 this.onSubmit(content)
             }.bind(this))
-
-        this.element
             .keypress(this.onKeyEvent.bind(this))
     }
 
@@ -128,13 +139,12 @@ class ScratchInputBoxController extends InputBoxController {
 
 $(document).ready(function () {
     const scratchRepository = new ScratchRepository(localStorage);
-
     const scratchList = new ScratchList(scratchRepository);
-    scratchList.showInContainer($("#items-list"))
+    const scratchInputBoxController = new ScratchInputBoxController(scratchRepository);
 
-    $('#sidebar').resizable({
-        handles: 'e'
-    });
+    $('#sidebar').resizable({ handles: 'e' })
+        .append(scratchInputBoxController.root)
+        .append(scratchList.root)
 
     $('#canvas-input').droppable({
         drop: function (event, ui) {
@@ -147,7 +157,4 @@ $(document).ready(function () {
             }
         }
     })
-
-    const scratchInputBoxController = new ScratchInputBoxController(scratchRepository)
-    scratchInputBoxController.attach($('#scratch-input'))
 })
