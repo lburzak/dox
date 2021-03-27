@@ -87,6 +87,45 @@ class ScratchList {
     }
 }
 
+class InputBoxController {
+    onSubmit() {}
+    onKeyEvent(event) {}
+
+    attach(element) {
+        this.element = element
+
+        this.element
+            .bind("submit", function () {
+                const content = $(this.element).val()
+                $(this.element).val("")
+                this.onSubmit(content)
+            }.bind(this))
+
+        this.element
+            .keypress(this.onKeyEvent.bind(this))
+    }
+
+    triggerSubmit() {
+        this.element.trigger("submit")
+    }
+}
+
+class ScratchInputBoxController extends InputBoxController {
+    constructor(scratchRepository) {
+        super()
+        this.scratchRepository = scratchRepository
+    }
+
+    onKeyEvent(event) {
+        if ((event.keyCode === 10 || event.keyCode === 13) && event.ctrlKey)
+            this.triggerSubmit()
+    }
+
+    onSubmit(content) {
+        this.scratchRepository.createOne(content);
+    }
+}
+
 $(document).ready(function () {
     const scratchRepository = new ScratchRepository(localStorage);
 
@@ -109,12 +148,6 @@ $(document).ready(function () {
         }
     })
 
-    $('#scratch-input').bind("submit", function() {
-        scratchRepository.createOne($(this).val());
-        $(this).val("")
-    }).keypress(function (e) {
-        if ((e.keyCode === 10 || e.keyCode === 13) && e.ctrlKey) {
-            $(this).trigger("submit")
-        }
-    })
+    const scratchInputBoxController = new ScratchInputBoxController(scratchRepository)
+    scratchInputBoxController.attach($('#scratch-input'))
 })
