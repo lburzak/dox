@@ -30,3 +30,7 @@
 .light-theme-icon:focus {
     filter: var(--filter-blue)
 }
+
+.light-theme-selected {
+    background-color: hsl(0, 0%, 78%);
+}
