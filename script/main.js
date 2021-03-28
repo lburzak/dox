@@ -189,6 +189,22 @@ class ScratchInputBoxController extends InputBoxController {
     }
 }
 
+class DocInputBoxController extends InputBoxController {
+    constructor(docRepository) {
+        super()
+        this.docRepository = docRepository
+    }
+
+    onKeyEvent(event) {
+        if (event.keyCode === 10 || event.keyCode === 13)
+            this.triggerSubmit()
+    }
+
+    onSubmit(text) {
+        this.docRepository.createOne(text);
+    }
+}
+
 $(document).ready(function () {
     const scratchRepository = new ScratchRepository(localStorage);
     const scratchList = new ScratchList(scratchRepository);
