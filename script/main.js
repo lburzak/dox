@@ -58,20 +58,55 @@ class ScratchRepository extends DocumentRepository {
     }
 }
 
-class ScratchList {
-    constructor(scratchRepository) {
-        this.scratchRepository = scratchRepository
+class DocRepository extends DocumentRepository {
+    constructor(storage) {
+        super(storage, "docs");
+    }
+
+    createOne(title) {
+        const doc = { title, content: "" }
+        this.insertOne(doc)
+    }
+}
+
+class RepositoryList {
+    constructor(repository) {
+        this.repository = repository
         this.container = this._buildContainer()
 
-        this.scratchRepository.findAll().forEach(this._showScratch.bind(this))
-        this.scratchRepository.subscribe(this._onDataChange.bind(this))
+        this.repository.findAll().forEach(this._appendRow.bind(this))
+        this.repository.subscribe(this._onDataChange.bind(this))
     }
 
     get root() {
         return this.container
     }
 
-    _createScratch(scratch) {
+    _buildContainer() {}
+
+    _buildRow(entity) { }
+
+    _appendRow(entity) {
+        this.container.append(this._buildRow(entity))
+    }
+
+    _onDataChange(entities) {
+        this.container.html("")
+        entities.forEach(this._appendRow.bind(this))
+    }
+}
+
+
+class ScratchList extends RepositoryList {
+    constructor(scratchRepository) {
+        super(scratchRepository);
+    }
+
+    _buildContainer() {
+        return $("<div/>", { id: "items-list" })
+    }
+
+    _buildRow(scratch) {
         return $("<div/>", {
             class: "card light-theme-card",
             html: scratch.content
@@ -88,19 +123,6 @@ class ScratchList {
                 left: 30
             }
         }).data("id", scratch.id)
-    }
-
-    _showScratch(scratch) {
-        this.container.append(this._createScratch(scratch))
-    }
-
-    _onDataChange(newData) {
-        this.container.html("")
-        newData.forEach(this._showScratch.bind(this))
-    }
-
-    _buildContainer() {
-        return $("<div/>", { id: "items-list" })
     }
 }
 
