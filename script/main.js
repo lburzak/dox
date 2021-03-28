@@ -1,19 +1,21 @@
-class ScratchRepository {
-    constructor(storage) {
+class DocumentRepository {
+    constructor(storage, collectionName) {
         this.storage = storage;
+        this.collectionName = collectionName;
+        this.idsLocationName = `id_${this.collectionName}`
         this.listeners = [];
     }
 
     get data() {
-        return JSON.parse(this.storage["scratches"])
+        return JSON.parse(this.storage[this.collectionName])
     }
 
     set data(val) {
-        this.storage["scratches"] = JSON.stringify(val)
+        this.storage[this.collectionName] = JSON.stringify(val)
     }
 
     get nextId() {
-        return this.storage["id_scratches"] = parseInt(this.storage["id_scratches"]) + 1
+        return this.storage[this.idsLocationName] = parseInt(this.storage[this.idsLocationName]) + 1
     }
 
     findAll() {
@@ -21,17 +23,17 @@ class ScratchRepository {
     }
 
     findOne(id) {
-        return this.data.find(scratch => scratch.id === id);
+        return this.data.find(document => document.id === id);
     }
 
     removeOne(id) {
-        this.data = this.data.filter(scratch => scratch.id !== id);
+        this.data = this.data.filter(document => document.id !== id);
         this._emitChange();
     }
 
-    createOne(content) {
-        const scratch = { id: this.nextId, content };
-        this.data = this.data.concat(scratch);
+    insertOne(entity) {
+        const document = { id: this.nextId, ...entity };
+        this.data = this.data.concat(document);
         this._emitChange()
     }
 
@@ -42,6 +44,17 @@ class ScratchRepository {
     _emitChange() {
         const changedData = [...this.data]
         this.listeners.forEach(listener => listener(changedData))
+    }
+}
+
+class ScratchRepository extends DocumentRepository {
+    constructor(storage) {
+        super(storage, "scratches");
+    }
+
+    createOne(content) {
+        const scratch = { content }
+        this.insertOne(scratch)
     }
 }
 
