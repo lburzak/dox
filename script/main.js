@@ -126,6 +126,23 @@ class ScratchList extends RepositoryList {
     }
 }
 
+class DocList extends RepositoryList {
+    constructor(docRepository) {
+        super(docRepository);
+    }
+
+    _buildContainer() {
+        return $("<div/>", { id: "items-list" })
+    }
+
+    _buildRow(doc) {
+        return $("<div/>", {
+            class: "card light-theme-card",
+            html: doc.title
+        })
+    }
+}
+
 class InputBoxController {
     constructor() {
         this.element = this._build()
