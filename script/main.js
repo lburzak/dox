@@ -154,7 +154,7 @@ class DocList extends RepositoryList {
     }
 }
 
-class InputBoxController {
+class InputBox {
     constructor() {
         this.element = this._build()
         this._bind(this.element)
@@ -182,7 +182,7 @@ class InputBoxController {
     }
 }
 
-class ScratchInputBoxController extends InputBoxController {
+class ScratchInputBox extends InputBox {
     constructor(scratchRepository) {
         super()
         this.scratchRepository = scratchRepository
@@ -206,7 +206,7 @@ class ScratchInputBoxController extends InputBoxController {
     }
 }
 
-class DocInputBoxController extends InputBoxController {
+class DocInputBox extends InputBox {
     constructor(docRepository) {
         super()
         this.docRepository = docRepository
@@ -252,21 +252,21 @@ class Pager {
 $(document).ready(function () {
     const scratchRepository = new ScratchRepository(localStorage);
     const scratchList = new ScratchList(scratchRepository);
-    const scratchInputBoxController = new ScratchInputBoxController(scratchRepository);
+    const scratchInputBox = new ScratchInputBox(scratchRepository);
     const docRepository = new DocRepository(localStorage);
     const docList = new DocList(docRepository)
-    const docInputBoxController = new DocInputBoxController(docRepository)
+    const docInputBox = new DocInputBox(docRepository)
 
     const pager = new Pager();
 
     const pageDoc = pager.addPage(
         $('<div/>')
-            .append(docInputBoxController.root, docList.root)
+            .append(docInputBox.root, docList.root)
     );
 
     const pageScratch = pager.addPage(
         $('<div/>')
-            .append(scratchInputBoxController.root, scratchList.root)
+            .append(scratchInputBox.root, scratchList.root)
     );
 
     $('#show-docs').click(() => pager.switchPage(pageDoc));
