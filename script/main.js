@@ -157,6 +157,7 @@ class DocList extends RepositoryList {
 class InputBoxController {
     constructor() {
         this.element = this._build()
+        this._bind(this.element)
     }
 
     get root() {
@@ -165,17 +166,14 @@ class InputBoxController {
 
     onSubmit() {}
     onKeyEvent(event) {}
+    _build() {}
 
-    _build() {
-        return $("<textarea\>", {
-            id: "scratch-input",
-            class: "light-theme-editor"
-        })
-            .bind("submit", function () {
-                const content = $(this.element).val()
-                $(this.element).val("")
-                this.onSubmit(content)
-            }.bind(this))
+    _bind(element) {
+        element.bind("submit", function () {
+            const content = $(this.element).val()
+            $(this.element).val("")
+            this.onSubmit(content)
+        }.bind(this))
             .keypress(this.onKeyEvent.bind(this))
     }
 
@@ -198,6 +196,14 @@ class ScratchInputBoxController extends InputBoxController {
     onSubmit(content) {
         this.scratchRepository.createOne(content);
     }
+
+    _build() {
+        return $("<textarea\>", {
+            id: "scratch-input",
+            class: "light-theme-editor",
+            rows: 3
+        })
+    }
 }
 
 class DocInputBoxController extends InputBoxController {
@@ -213,6 +219,14 @@ class DocInputBoxController extends InputBoxController {
 
     onSubmit(text) {
         this.docRepository.createOne(text);
+    }
+
+    _build() {
+        return $("<textarea\>", {
+            id: "scratch-input",
+            class: "light-theme-editor",
+            rows: 1
+        })
     }
 }
 
