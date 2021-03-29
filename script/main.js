@@ -4,6 +4,9 @@ class DocumentRepository {
         this.collectionName = collectionName;
         this.idsLocationName = `id_${this.collectionName}`
         this.listeners = [];
+
+        if (!this._isCollectionInitialized())
+            this._initCollection();
     }
 
     get data() {
@@ -39,6 +42,14 @@ class DocumentRepository {
 
     subscribe(onEvent) {
         this.listeners.push(onEvent);
+    }
+
+    _isCollectionInitialized() {
+        return this.storage[this.collectionName] !== undefined;
+    }
+
+    _initCollection() {
+        this.data = [];
     }
 
     _emitChange() {
@@ -205,14 +216,50 @@ class DocInputBoxController extends InputBoxController {
     }
 }
 
+class Pager {
+    constructor() {
+        this.pages = [];
+        this.container = $('<div/>', { class: 'pager' });
+    }
+
+    get root() {
+        return this.container;
+    }
+
+    addPage(element) {
+        return this.pages.push(element) - 1;
+    }
+
+    switchPage(pos) {
+        this.container.html(this.pages[pos]);
+    }
+}
+
 $(document).ready(function () {
     const scratchRepository = new ScratchRepository(localStorage);
     const scratchList = new ScratchList(scratchRepository);
     const scratchInputBoxController = new ScratchInputBoxController(scratchRepository);
+    const docRepository = new DocRepository(localStorage);
+    const docList = new DocList(docRepository)
+    const docInputBoxController = new DocInputBoxController(docRepository)
+
+    const pager = new Pager();
+
+    const pageDoc = pager.addPage(
+        $('<div/>')
+            .append(docInputBoxController.root, docList.root)
+    );
+
+    const pageScratch = pager.addPage(
+        $('<div/>')
+            .append(scratchInputBoxController.root, scratchList.root)
+    );
+
+    $('#show-docs').click(() => pager.switchPage(pageDoc));
+    $('#show-scratches').click(() => pager.switchPage(pageScratch));
 
     $('#sidebar').resizable({ handles: 'e' })
-        .append(scratchInputBoxController.root)
-        .append(scratchList.root)
+        .append(pager.root)
 
     $('#canvas-input').droppable({
         drop: function (event, ui) {

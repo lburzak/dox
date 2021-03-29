@@ -33,16 +33,18 @@
 }
 
 #scratch-input {
-    box-sizing: content-box;
+    box-sizing: border-box;
     padding: 8px;
     outline: none;
     border-width: 0 0 1px 0;
     border-bottom-style: solid;
     resize: none;
+    flex: 1 1 auto;
+    width: 100%;
 }
 
 #items-list {
-    height: 0;
+    height: 100%;
     flex: 1 1 auto;
     width: 100%;
     display: flex;
