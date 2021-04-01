@@ -64,6 +64,12 @@
     cursor: move;
 }
 
+.file-row {
+    height: auto;
+    max-lines: 1;
+    padding: 8px;
+}
+
 #canvas {
     flex-shrink: 40;
     display: flex;

@@ -148,7 +148,7 @@ class DocList extends RepositoryList {
 
     _buildRow(doc) {
         return $("<div/>", {
-            class: "card light-theme-card",
+            class: "file-row light-theme-card",
             html: doc.title
         })
     }
