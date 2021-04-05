@@ -40,8 +40,14 @@ class DocumentRepository {
         this._emitChange();
     }
 
-    subscribe(onEvent) {
-        this.listeners.push(onEvent);
+    subscribe(listener) {
+        this.listeners.push(listener);
+
+        listener([...this.data]);
+
+        return () => {
+            this.listeners.splice(this.listeners.indexOf(listener))
+        };
     }
 
     _isCollectionInitialized() {
