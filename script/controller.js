@@ -77,6 +77,8 @@ class InputBoxController {
         if (this._shouldHandleSubmit(event)) {
             this._callback(this._$elem.val())
             this.clear();
+
+            return false;
         }
     }
 }
