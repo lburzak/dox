@@ -32,7 +32,7 @@
     flex-direction: column;
 }
 
-#scratch-input {
+#sidebar-input-box {
     box-sizing: border-box;
     padding: 8px;
     outline: none;
@@ -43,7 +43,7 @@
     width: 100%;
 }
 
-#items-list {
+#sidebar-list {
     height: 0;
     flex: 1 1 auto;
     width: 100%;
@@ -70,7 +70,7 @@
     padding: 8px;
 }
 
-#canvas {
+#editor {
     flex-shrink: 40;
     display: flex;
     flex-direction: column;
@@ -79,7 +79,7 @@
     width: 100%;
 }
 
-#canvas-input {
+#editor textarea {
     padding-top: 3.5em;
     border: none;
     resize: none;
@@ -89,18 +89,18 @@
     height: 100%;
 }
 
-#canvas-input:focus {
+.input-box:focus {
     outline: none;
 }
 
-#files-nav {
+#sidebar-tabs {
     display: flex;
     flex-direction: row;
     border-width: 0 0 1px 0;
     border-style: solid;
 }
 
-#files-nav button {
+#sidebar-tabs button {
     flex: 1;
     height: 28px;
     border-width: 0 1px 0 0;
@@ -109,10 +109,10 @@
     transition-duration: 300ms;
 }
 
-#files-nav button:focus {
+#sidebar-tabs button:focus {
     outline: none;
 }
 
-#files-nav button:last-of-type {
+#sidebar-tabs button:last-of-type {
     border-width: 0;
 }
