@@ -151,6 +151,6 @@ class EditorController {
 
     setDocId(id) {
         const {content} = this.docRepository.findOne(id);
-        this.$textarea.val(content);
+        this.$textarea.html(content);
     }
 }
