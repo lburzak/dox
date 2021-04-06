@@ -129,6 +129,8 @@ class RepositoryListController {
 }
 
 class EditorController {
+    currentDoc = null;
+
     constructor($textarea, scratchRepository, docRepository) {
         this.scratchRepository = scratchRepository;
         this.docRepository = docRepository;
@@ -137,11 +139,32 @@ class EditorController {
         $textarea.droppable({
             drop: this._handleDrop.bind(this)
         });
+
+        $textarea.on('change keyup paste', this.save.bind(this))
+    }
+
+    get text() {
+        return this.$textarea.val();
+    }
+
+    set text(val) {
+        this.$textarea.val(val);
     }
 
     setDocId(id) {
-        const {content} = this.docRepository.findOne(id);
-        this.$textarea.html(content);
+        const doc = this.docRepository.findOne(id);
+
+        if (doc !== undefined) {
+            this.currentDoc = doc;
+            this.text = doc.content;
+        }
+    }
+
+    save() {
+        if (this.currentDoc !== null) {
+            this.currentDoc.content = this.text;
+            this.docRepository.updateOne(this.currentDoc);
+        }
     }
 
     _handleDrop(_, ui) {
@@ -150,7 +173,12 @@ class EditorController {
 
         if (scratch !== undefined) {
             this.scratchRepository.removeOne(id);
-            this.$textarea.append(scratch.content);
+            this._appendText(scratch.content);
         }
+    }
+
+    _appendText(text) {
+        this.text += text;
+        this.$textarea.trigger('change');
     }
 }

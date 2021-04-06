@@ -40,6 +40,15 @@ class DocumentRepository {
         this._emitChange();
     }
 
+    updateOne(newEntity) {
+        this.data = this.data.map(entity => {
+            if (entity.id === newEntity.id)
+                return newEntity;
+            else
+                return entity;
+        })
+    }
+
     subscribe(listener) {
         this.listeners.push(listener);
 
