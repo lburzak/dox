@@ -14,7 +14,7 @@
     border-color: hsla(0, 0%, 0%, 0.1);
 }
 
-.light-theme-card {
+.light-theme.card, .light-theme.file-row {
     background-color: hsl(0, 0%, 100%);
 }
 

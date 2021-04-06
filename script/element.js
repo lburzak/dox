@@ -16,7 +16,7 @@ function renderScratchDragHelper() {
 
 function renderScratch(scratch) {
     const element = $("<div/>", {
-        class: "card light-theme-card",
+        class: "light-theme card",
         html: scratch.content
     }).draggable(SCRATCH_DRAGGABLE_OPTS);
 
@@ -27,7 +27,7 @@ function renderScratch(scratch) {
 
 function renderDoc(doc) {
     return $("<div/>", {
-        class: "file-row light-theme-card",
+        class: "light-theme file-row",
         html: doc.title
     })
 }
