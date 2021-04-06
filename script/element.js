@@ -32,6 +32,12 @@ function renderDoc(doc) {
     })
 }
 
+function renderTrash() {
+    return $("<div/>", {
+        class: "icon icon-trash"
+    })
+}
+
 function putMetadata($element, metadata) {
     $element.data("id", metadata.id);
 }

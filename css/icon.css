@@ -19,3 +19,7 @@
     margin-left: auto;
     background-image: url("../assets/icon-help.svg");
 }
+
+.icon-trash {
+    background-image: url("../assets/icon-trash.svg");
+}

@@ -43,7 +43,8 @@ class SidebarController {
 
         this.inputBoxController.setMultiline(multiline);
         this.inputBoxController.setOnSubmit(repository.createOne.bind(repository));
-        this.listController.setSource(repository, renderFn);
+        this.listController.setRowRenderFn(renderFn);
+        this.listController.setSource(repository);
     }
 }
 
@@ -86,17 +87,25 @@ class InputBoxController {
 class RepositoryListController {
     _unsubscribe = () => {};
     _onRowClick = () => {};
+    _renderRow = () => {};
+    _repository = null;
 
     constructor($list) {
         this.$list = $list;
     }
 
-    setSource(repository, renderRow) {
+    setRowRenderFn(renderRow) {
+        this._renderRow = renderRow;
+    }
+
+    setSource(repository) {
         this._unsubscribe();
+
+        this.repository = repository;
 
         this._unsubscribe =
             repository.subscribe(entities =>
-                this._populateList(entities, renderRow)
+                this._populateList(entities)
             );
     }
 
@@ -107,24 +116,45 @@ class RepositoryListController {
         this._onRowClick = callback;
     }
 
-    _populateList(entities, renderRow) {
+    _populateList(entities) {
         const rows = entities
-            .map(entity => ({row: renderRow(entity), id: entity.id}))
-            .map(({row, id}) =>
-                row.click(({target}) =>
-                this._selectRow($(target), id)
-            ));
+            .map(this._createRow.bind(this));
 
         this.$list
             .empty()
             .append(rows);
     }
 
-    _selectRow($row, id) {
+    _createRow(entity) {
+        const $row = this._renderRow(entity);
+        $row.click(() => this._onSelectRow($row, entity.id));
+        $row.hover(
+            () => this._showTrashAction($row, entity.id),
+            () => this._hideTrashAction($row)
+        );
+
+        return $row;
+    }
+
+    _onSelectRow($row, id) {
         $row.siblings().removeClass('selected');
         $row.addClass('selected');
 
         this._onRowClick(id);
+    }
+
+    _showTrashAction($row, id) {
+        const trashIcon = renderTrash();
+        trashIcon.click(() => this._onTrashAction(id));
+        $row.append(trashIcon);
+    }
+
+    _hideTrashAction($row) {
+        $row.children('.icon').remove();
+    }
+
+    _onTrashAction(id) {
+        this.repository.removeOne(id);
     }
 }
 

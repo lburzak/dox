@@ -68,6 +68,17 @@
     height: auto;
     max-lines: 1;
     padding: 8px;
+
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+}
+
+.file-row .icon {
+    display: inline-block;
+    background-size: 20px;
+    height: 100% !important;
+    width: 20px;
 }
 
 #editor {
