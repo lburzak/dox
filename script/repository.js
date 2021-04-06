@@ -43,7 +43,7 @@ class DocumentRepository {
     subscribe(listener) {
         this.listeners.push(listener);
 
-        listener([...this.data]);
+        listener(this.findAll());
 
         return () => {
             this.listeners.splice(this.listeners.indexOf(listener))
@@ -60,7 +60,7 @@ class DocumentRepository {
     }
 
     _emitChange() {
-        const changedData = [...this.data];
+        const changedData = this.findAll();
         this.listeners.forEach(listener => listener(changedData));
     }
 }
