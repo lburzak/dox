@@ -85,6 +85,7 @@ class InputBoxController {
 
 class RepositoryListController {
     _unsubscribe = () => {};
+    _onRowClick = () => {};
 
     constructor($list) {
         this.$list = $list;
@@ -99,11 +100,19 @@ class RepositoryListController {
             );
     }
 
+    /**
+     * @param callback A function that handles row click based on entity id passed as an argument
+     */
+    setOnRowClick(callback) {
+        this._onRowClick = callback;
+    }
+
     _populateList(entities, renderRow) {
         const rows = entities
-            .map(renderRow)
-            .map(row => row.click(({target}) =>
-                this._selectRow($(target))
+            .map(entity => ({row: renderRow(entity), id: entity.id}))
+            .map(({row, id}) =>
+                row.click(({target}) =>
+                this._selectRow($(target), id)
             ));
 
         this.$list
@@ -111,9 +120,11 @@ class RepositoryListController {
             .append(rows);
     }
 
-    _selectRow($row) {
+    _selectRow($row, id) {
         $row.siblings().removeClass('selected');
         $row.addClass('selected');
+
+        this._onRowClick(id);
     }
 }
 
