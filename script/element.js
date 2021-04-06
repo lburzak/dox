@@ -15,11 +15,14 @@ function renderScratchDragHelper() {
 }
 
 function renderScratch(scratch) {
-    return $("<div/>", {
+    const element = $("<div/>", {
         class: "card light-theme-card",
         html: scratch.content
-    }).draggable(SCRATCH_DRAGGABLE_OPTS)
-        .data("id", scratch.id)
+    }).draggable(SCRATCH_DRAGGABLE_OPTS);
+
+    putMetadata(element, {id: scratch.id});
+
+    return element;
 }
 
 function renderDoc(doc) {
@@ -27,4 +30,14 @@ function renderDoc(doc) {
         class: "file-row light-theme-card",
         html: doc.title
     })
+}
+
+function putMetadata($element, metadata) {
+    $element.data("id", metadata.id);
+}
+
+function retrieveMetadata($element) {
+    return {
+        id: $element.data("id")
+    };
 }
