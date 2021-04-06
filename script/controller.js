@@ -107,3 +107,24 @@ class RepositoryListController {
             .append(rows);
     }
 }
+
+class EditorController {
+    constructor($textarea, scratchRepository) {
+        this.scratchRepository = scratchRepository;
+        this.$textarea = $textarea;
+
+        $textarea.droppable({
+            drop: this._handleDrop.bind(this)
+        });
+    }
+
+    _handleDrop(_, ui) {
+        const {id} = retrieveMetadata(ui.draggable);
+        const scratch = this.scratchRepository.findOne(id);
+
+        if (scratch !== undefined) {
+            this.scratchRepository.removeOne(id);
+            this.$textarea.append(scratch.content);
+        }
+    }
+}

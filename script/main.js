@@ -4,19 +4,8 @@ $(document).ready(function () {
 
     const inputBoxController = new InputBoxController($('#scratch-input'));
     const listController = new RepositoryListController($('#items-list'));
-    const sidebarController = new SidebarController($('#files-nav'), docRepository, scratchRepository, inputBoxController, listController);
+    new SidebarController($('#files-nav'), docRepository, scratchRepository, inputBoxController, listController);
+    new EditorController($('#canvas-input'), scratchRepository);
 
-    $('#sidebar').resizable({handles: 'e'})
-
-    $('#canvas-input').droppable({
-        drop: function (event, ui) {
-            const id = ui.draggable.data("id")
-            const scratch = scratchRepository.findOne(id)
-
-            if (scratch !== undefined) {
-                scratchRepository.removeOne(id)
-                $(this).append(scratch.content);
-            }
-        }
-    });
+    $('#sidebar').resizable({handles: 'e'});
 })
