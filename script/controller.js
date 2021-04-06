@@ -100,11 +100,20 @@ class RepositoryListController {
     }
 
     _populateList(entities, renderRow) {
-        const rows = entities.map(renderRow);
+        const rows = entities
+            .map(renderRow)
+            .map(row => row.click(({target}) =>
+                this._selectRow($(target))
+            ));
 
         this.$list
             .empty()
             .append(rows);
+    }
+
+    _selectRow($row) {
+        $row.siblings().removeClass('selected');
+        $row.addClass('selected');
     }
 }
 
