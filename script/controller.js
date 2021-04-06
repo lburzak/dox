@@ -129,8 +129,9 @@ class RepositoryListController {
 }
 
 class EditorController {
-    constructor($textarea, scratchRepository) {
+    constructor($textarea, scratchRepository, docRepository) {
         this.scratchRepository = scratchRepository;
+        this.docRepository = docRepository;
         this.$textarea = $textarea;
 
         $textarea.droppable({
@@ -146,5 +147,10 @@ class EditorController {
             this.scratchRepository.removeOne(id);
             this.$textarea.append(scratch.content);
         }
+    }
+
+    setDocId(id) {
+        const {content} = this.docRepository.findOne(id);
+        this.$textarea.val(content);
     }
 }
