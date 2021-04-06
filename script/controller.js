@@ -16,8 +16,8 @@ class SidebarController {
     }
 
     _handleNavButtonClick($elem) {
-        $elem.siblings().removeClass('light-theme-selected');
-        $elem.addClass('light-theme-selected');
+        $elem.siblings().removeClass('selected');
+        $elem.addClass('selected');
 
         const id = $elem.attr('id');
 
