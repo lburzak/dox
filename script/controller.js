@@ -139,6 +139,11 @@ class EditorController {
         });
     }
 
+    setDocId(id) {
+        const {content} = this.docRepository.findOne(id);
+        this.$textarea.html(content);
+    }
+
     _handleDrop(_, ui) {
         const {id} = retrieveMetadata(ui.draggable);
         const scratch = this.scratchRepository.findOne(id);
@@ -147,10 +152,5 @@ class EditorController {
             this.scratchRepository.removeOne(id);
             this.$textarea.append(scratch.content);
         }
-    }
-
-    setDocId(id) {
-        const {content} = this.docRepository.findOne(id);
-        this.$textarea.html(content);
     }
 }
