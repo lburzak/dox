@@ -56,6 +56,7 @@ class DocumentRepository {
 
     _initCollection() {
         this.data = [];
+        this.storage[this.idsLocationName] = 0;
     }
 
     _emitChange() {
