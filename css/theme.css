@@ -40,6 +40,6 @@
     background-color: hsl(0, 0%, 78%);
 }
 
-#trash-box.light-theme.ui-droppable-hover {
+#trash-box.icon:hover, #trash-box.icon:focus {
     filter: var(--filter-red);
 }

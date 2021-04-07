@@ -135,4 +135,11 @@
     background-size: 64px;
     height: 64px;
     width: 64px;
+    z-index: 100;
+
+    transition: background-size 100ms;
+}
+
+#trash-box:hover {
+    background-size: 72px;
 }
