@@ -19,7 +19,7 @@ function renderDoc(doc) {
     })
 }
 
-function renderTrash() {
+function renderDeleteDoc() {
     return $("<div/>", {
         class: "icon icon-trash"
     })

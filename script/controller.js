@@ -116,9 +116,9 @@ class DocRowController extends RowController {
     }
 
     _showTrashAction($row, id) {
-        const trashIcon = renderTrash();
-        trashIcon.click(() => this._onTrashAction(id));
-        $row.append(trashIcon);
+        const deleteAction = renderDeleteDoc();
+        deleteAction.click(() => this._onTrashAction(id));
+        $row.append(deleteAction);
     }
 
     _hideTrashAction($row) {
