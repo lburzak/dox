@@ -1,7 +1,6 @@
 function renderScratchDragHelper() {
     return $("<div/>", {
-        class: "icon icon-scratch",
-        style: "height: 40px"
+        class: "icon icon-scratch"
     })
 }
 

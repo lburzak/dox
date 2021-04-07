@@ -133,6 +133,11 @@
     border-width: 0;
 }
 
+.ui-draggable-dragging {
+    width: 120px;
+    height: 40px;
+}
+
 #trash-box {
     position: absolute;
     bottom: 24px;
