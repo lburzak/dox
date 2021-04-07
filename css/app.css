@@ -148,7 +148,7 @@
     background-size: 72px;
 }
 
-@media only screen and (max-device-width: 40em) {
+@media only screen and (max-device-width: 700px) {
     #main {
         flex-direction: column;
     }

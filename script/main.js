@@ -10,5 +10,17 @@ $(document).ready(function () {
     const scratchRowController = new ScratchRowController(trashBoxController);
     new SidebarController($('#sidebar-tabs'), docRepository, scratchRepository, inputBoxController, listController, docRowController, scratchRowController);
 
-    $('#sidebar').resizable({handles: 'e'});
+    const narrowScreenQuery = new NarrowScreenMediaQuery();
+
+    if (!narrowScreenQuery.check()) {
+        $('#sidebar').resizable({handles: 'e'});
+    }
+
+    narrowScreenQuery.watch(isNarrow => {
+        console.log(isNarrow)
+        if (isNarrow)
+            $('#sidebar').resizable("destroy").css({'width': ''});
+        else
+            $('#sidebar').resizable({handles: 'e'});
+    })
 })
