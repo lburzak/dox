@@ -1,12 +1,3 @@
-const SCRATCH_DRAGGABLE_OPTS = Object.freeze({
-    helper: renderScratchDragHelper,
-    opacity: 0.5,
-    cursorAt: {
-        top: 30,
-        left: 30
-    }
-})
-
 function renderScratchDragHelper() {
     return $("<div/>", {
         class: "icon icon-scratch",
@@ -14,15 +5,11 @@ function renderScratchDragHelper() {
     })
 }
 
-function renderScratch(scratch) {
-    const element = $("<div/>", {
+function renderScratch(content) {
+    return $("<div/>", {
         class: "light-theme card",
-        html: scratch.content
-    }).draggable(SCRATCH_DRAGGABLE_OPTS);
-
-    putMetadata(element, {id: scratch.id});
-
-    return element;
+        html: content
+    });
 }
 
 function renderDoc(doc) {

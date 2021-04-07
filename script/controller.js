@@ -135,8 +135,22 @@ class DocRowController extends RowController {
 }
 
 class ScratchRowController extends RowController {
+    static _SCRATCH_DRAGGABLE_OPTS = Object.freeze({
+        helper: renderScratchDragHelper,
+        opacity: 0.5,
+        cursorAt: {
+            top: 30,
+            left: 30
+        }
+    })
+
     makeRow(scratch) {
-        return renderScratch(scratch);
+        const $row = renderScratch(scratch.content);
+        $row.draggable(ScratchRowController._SCRATCH_DRAGGABLE_OPTS);
+
+        putMetadata($row, {id: scratch.id});
+
+        return $row;
     }
 }
 
