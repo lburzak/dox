@@ -101,7 +101,7 @@ class RepositoryListController {
     setSource(repository) {
         this._unsubscribe();
 
-        this.repository = repository;
+        this._repository = repository;
 
         this._unsubscribe =
             repository.subscribe(entities =>
@@ -154,7 +154,7 @@ class RepositoryListController {
     }
 
     _onTrashAction(id) {
-        this.repository.removeOne(id);
+        this._repository.removeOne(id);
     }
 }
 
