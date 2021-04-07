@@ -4,10 +4,10 @@ $(document).ready(function () {
 
     const inputBoxController = new InputBoxController($('#sidebar-input-box'));
     const listController = new RepositoryListController($('#sidebar-list'));
-    new SidebarController($('#sidebar-tabs'), docRepository, scratchRepository, inputBoxController, listController);
     const editorController = new EditorController($('#editor textarea'), scratchRepository, docRepository);
-
-    listController.setOnRowClick(id => editorController.setDocId(id));
+    const docRowController = new DocRowController(editorController, docRepository);
+    const scratchRowController = new ScratchRowController();
+    new SidebarController($('#sidebar-tabs'), docRepository, scratchRepository, inputBoxController, listController, docRowController, scratchRowController);
 
     $('#sidebar').resizable({handles: 'e'});
 })

@@ -4,11 +4,13 @@ class SidebarController {
         SCRATCH: 'show-scratches'
     });
 
-    constructor($sidebarNav, docRepository, scratchRepository, inputBoxController, listController) {
+    constructor($sidebarNav, docRepository, scratchRepository, inputBoxController, listController, docRowController, scratchRowController) {
         this.docRepository = docRepository;
         this.scratchRepository = scratchRepository;
         this.inputBoxController = inputBoxController;
         this.listController = listController;
+        this.docRowController = docRowController;
+        this.scratchRowController = scratchRowController;
 
         $sidebarNav.on('click', 'button', (event) => {
             this._handleNavButtonClick($(event.target));
@@ -25,25 +27,25 @@ class SidebarController {
     }
 
     _setupTab(tab) {
-        let renderFn;
+        let rowController;
         let repository;
         let multiline;
 
         switch (tab) {
             case SidebarController._Tab.DOC:
-                renderFn = renderDoc;
+                rowController = this.docRowController;
                 repository = this.docRepository;
                 multiline = false;
                 break;
             case SidebarController._Tab.SCRATCH:
-                renderFn = renderScratch;
+                rowController = this.scratchRowController;
                 repository = this.scratchRepository;
                 multiline = true;
         }
 
         this.inputBoxController.setMultiline(multiline);
         this.inputBoxController.setOnSubmit(repository.createOne.bind(repository));
-        this.listController.setRowRenderFn(renderFn);
+        this.listController.setRowController(rowController);
         this.listController.setSource(repository);
     }
 }
@@ -84,52 +86,22 @@ class InputBoxController {
     }
 }
 
-class RepositoryListController {
-    _unsubscribe = () => {};
-    _onRowClick = () => {};
-    _renderRow = () => {};
-    _repository = null;
+class RowController {
+    makeRow(entity) {}
+}
 
-    constructor($list) {
-        this.$list = $list;
+class DocRowController extends RowController {
+    constructor(editorController, docRepository) {
+        super();
+        this._docRepository = docRepository;
+        this._editorController = editorController;
     }
 
-    setRowRenderFn(renderRow) {
-        this._renderRow = renderRow;
-    }
-
-    setSource(repository) {
-        this._unsubscribe();
-
-        this._repository = repository;
-
-        this._unsubscribe =
-            repository.subscribe(entities =>
-                this._populateList(entities)
-            );
-    }
-
-    /**
-     * @param callback A function that handles row click based on entity id passed as an argument
-     */
-    setOnRowClick(callback) {
-        this._onRowClick = callback;
-    }
-
-    _populateList(entities) {
-        const rows = entities
-            .map(this._createRow.bind(this));
-
-        this.$list
-            .empty()
-            .append(rows);
-    }
-
-    _createRow(entity) {
-        const $row = this._renderRow(entity);
-        $row.click(() => this._onSelectRow($row, entity.id));
+    makeRow(doc) {
+        const $row = renderDoc(doc);
+        $row.click(() => this._onSelectRow($row, doc.id));
         $row.hover(
-            () => this._showTrashAction($row, entity.id),
+            () => this._showTrashAction($row, doc.id),
             () => this._hideTrashAction($row)
         );
 
@@ -154,7 +126,49 @@ class RepositoryListController {
     }
 
     _onTrashAction(id) {
-        this._repository.removeOne(id);
+        this._docRepository.removeOne(id);
+    }
+
+    _onRowClick(id) {
+        this._editorController.setDocId(id);
+    }
+}
+
+class ScratchRowController extends RowController {
+    makeRow(scratch) {
+        return renderScratch(scratch);
+    }
+}
+
+class RepositoryListController {
+    _unsubscribe = () => {};
+
+    constructor($list) {
+        this.$list = $list;
+    }
+
+    setSource(repository) {
+        this._unsubscribe();
+
+        this._repository = repository;
+
+        this._unsubscribe =
+            repository.subscribe(entities =>
+                this._populateList(entities)
+            );
+    }
+
+    setRowController(rowController) {
+        this._rowController = rowController;
+    }
+
+    _populateList(entities) {
+        const rows = entities
+            .map(entity => this._rowController.makeRow(entity));
+
+        this.$list
+            .empty()
+            .append(rows);
     }
 }
 
