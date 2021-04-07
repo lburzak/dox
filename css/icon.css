@@ -1,10 +1,17 @@
 .icon {
     display: inline-block;
-    height: 100%;
-    width: 40px;
     background-size: 25px;
     background-repeat: no-repeat;
     background-position: center;
+}
+
+#toolbar .icon {
+    height: 100%;
+    width: 40px;
+}
+
+.side .icon {
+    height: 64px;
 }
 
 .icon-doc {
@@ -22,4 +29,14 @@
 
 .icon-trash {
     background-image: url("../assets/icon-trash.svg");
+}
+
+.icon-translate {
+    background-image: url("../assets/icon-translate.svg");
+}
+
+@media only screen and (max-device-width: 700px) {
+    .side .icon {
+        width: 64px;
+    }
 }
