@@ -144,9 +144,17 @@ class ScratchRowController extends RowController {
         }
     })
 
+    constructor(trashBoxController) {
+        super();
+        this._trashBoxController = trashBoxController;
+    }
+
     makeRow(scratch) {
         const $row = renderScratch(scratch.content);
         $row.draggable(ScratchRowController._SCRATCH_DRAGGABLE_OPTS);
+
+        $row.on('dragstart', () => this._trashBoxController.show())
+        $row.on('dragstop', () => this._trashBoxController.hide())
 
         putMetadata($row, {id: scratch.id});
 
@@ -238,5 +246,36 @@ class EditorController {
     _appendText(text) {
         this.text += text;
         this.$textarea.trigger('change');
+    }
+}
+
+class TrashBoxController {
+    static _ANIMATION_DURATION = 11;
+
+    constructor($box, scratchRepository) {
+        this._$box = $box;
+        this._scratchRepository = scratchRepository;
+
+        $box.droppable({
+            drop: (_, ui) => this._handleDrop(ui.draggable)
+        });
+
+        this.hide();
+    }
+
+    show() {
+        this._$box.show(TrashBoxController._ANIMATION_DURATION);
+    }
+
+    hide() {
+        this._$box.hide(TrashBoxController._ANIMATION_DURATION);
+    }
+
+    _handleDrop($draggable) {
+        const {id} = retrieveMetadata($draggable);
+
+        this._scratchRepository.removeOne(id);
+
+        this.hide();
     }
 }

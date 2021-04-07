@@ -39,3 +39,7 @@
 .light-theme.selected {
     background-color: hsl(0, 0%, 78%);
 }
+
+#trash-box.light-theme.ui-droppable-hover {
+    filter: var(--filter-red);
+}
