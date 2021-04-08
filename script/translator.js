@@ -1,8 +1,29 @@
-class DeepTranslator {
+class Translator {
+    setSourceLang(lang) {
+        this._sourceLang = lang;
+    }
+
+    setTargetLang(lang) {
+        this._targetLang = lang;
+    }
+
+    _assertLangSelected() {
+        if (this._sourceLang === undefined)
+            throw new Error("Unable to translate: Source language not selected.");
+        if (this._targetLang === undefined)
+            throw new Error("Unable to translate: Target language not selected.");
+    }
+
+    getLanguages() { throw new Error("Unimplemented.") }
+    translate(phrase) { throw new Error("Unimplemented.") }
+}
+
+class DeepTranslator extends Translator {
     static ENDPOINT_TRANSLATE = "/language/translate/v2";
     static ENDPOINT_LANGUAGES = "/language/translate/v2/languages";
 
     constructor(api) {
+        super();
         this.headers = {
             "content-type": "application/json",
             ...api.authHeaders
@@ -10,14 +31,6 @@ class DeepTranslator {
 
         this._translateEndpoint = new URL(DeepTranslator.ENDPOINT_TRANSLATE, api.url).toString();
         this._languageEndpoint = new URL(DeepTranslator.ENDPOINT_LANGUAGES, api.url).toString();
-    }
-
-    setSourceLang(lang) {
-        this._sourceLang = lang;
-    }
-
-    setTargetLang(lang) {
-        this._targetLang = lang;
     }
 
     async getLanguages() {
@@ -55,11 +68,26 @@ class DeepTranslator {
             "target": this._targetLang
         });
     }
+}
 
-    _assertLangSelected() {
-        if (this._sourceLang === undefined)
-            throw new Error("Unable to translate: Source language not selected.");
-        if (this._targetLang === undefined)
-            throw new Error("Unable to translate: Target language not selected.");
+class MockTranslator extends Translator {
+    getLanguages() {
+        return {
+            "Reversed": "reverse",
+            "Upper-case": "uppercase"
+        };
+    }
+
+    translate(phrase) {
+        this._assertLangSelected();
+
+        switch (this._targetLang) {
+            case "reverse":
+                return phrase.split('').reverse().join('');
+            case "uppercase":
+                return phrase.toUpperCase();
+            default:
+                return phrase;
+        }
     }
 }
