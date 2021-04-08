@@ -186,7 +186,7 @@
     resize: none;
 }
 
-#plugin-panel.light-theme select,button {
+#plugin-panel select,button {
     height: 2em;
 }
 
