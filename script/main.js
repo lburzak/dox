@@ -23,4 +23,8 @@ $(document).ready(function () {
         else
             $('#sidebar').resizable({handles: 'e'});
     })
+
+    $('#action-translate').click(() => {
+        $('#plugin-panel').toggle();
+    })
 })

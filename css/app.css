@@ -11,9 +11,12 @@
     display: flex;
 }
 
+.side {
+    z-index: 1;
+}
+
 #toolbar {
     padding: 0 6px 0 6px;
-    z-index: 1;
     height: 40px;
     box-shadow: hsla(0, 0%, 40%, 0.3) 0 0 4px 2px;
     border-bottom-width: 1px;
@@ -24,7 +27,6 @@
 }
 
 #sidebar {
-    z-index: 1;
     width: 200px;
     border-right-width: 1px;
     border-right-style: solid;
@@ -155,7 +157,6 @@
 }
 
 #plugin-bar {
-    z-index: 1;
     width: 64px;
     border-left-width: 1px;
     border-left-style: solid;
@@ -164,6 +165,47 @@
     display: flex;
     flex-direction: column;
     min-height: 32px;
+}
+
+#plugin-panel {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    width: 300px;
+    border-left-width: 1px;
+    border-left-style: solid;
+    border-bottom-width: 1px;
+    border-bottom-style: solid;
+    padding: 16px;
+}
+
+#plugin-panel textarea,select,button {
+    flex: 1 1 auto;
+    border-radius: 4px;
+    border-width: 1px;
+    resize: none;
+}
+
+#plugin-panel.light-theme button {
+    height: 2em;
+}
+
+#plugin-panel .row {
+    display: flex;
+    flex-direction: row;
+    gap: 12px;
+}
+
+#plugin-panel .column {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    margin: 24px 0 24px 0;
+}
+
+#plugin-panel textarea {
+    outline: none;
+    padding: 6px;
 }
 
 @media only screen and (max-device-width: 700px) {

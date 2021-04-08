@@ -40,6 +40,19 @@
     background-color: hsl(0, 0%, 78%);
 }
 
+#plugin-panel.light-theme textarea,select,button {
+    background-color: hsl(0, 0%, 100%);
+    border-color: hsla(0, 0%, 0%, 0.1);
+}
+
+#plugin-panel.light-theme textarea:focus,select:focus,button:focus {
+    outline: lightblue solid 1px;
+}
+
+#plugin-panel.light-theme button {
+    background-color: hsl(0, 0%, 98%);
+}
+
 #trash-box.icon:hover, #trash-box.icon:focus {
     filter: var(--filter-red);
 }
