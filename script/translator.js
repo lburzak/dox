@@ -71,14 +71,14 @@ class DeepTranslator extends Translator {
 }
 
 class MockTranslator extends Translator {
-    getLanguages() {
+    async getLanguages() {
         return {
             "Reversed": "reverse",
             "Upper-case": "uppercase"
         };
     }
 
-    translate(phrase) {
+    async translate(phrase) {
         this._assertLangSelected();
 
         switch (this._targetLang) {

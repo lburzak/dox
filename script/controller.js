@@ -279,3 +279,57 @@ class TrashBoxController {
         this.hide();
     }
 }
+
+class TranslatorController {
+    constructor($panel, translator) {
+        this._translator = translator;
+
+        this._$sourceLangSelect = $('#translator-source-lang', $panel);
+        this._$targetLangSelect = $('#translator-target-lang', $panel);
+        this._$inputBox = $('#translator-input', $panel);
+        this._$outputBox = $('#translator-result', $panel);
+        this._$translateButton = $('#translator-translate', $panel);
+
+        this._translator.getLanguages().then(languagesMap => this._setupLangSelects(languagesMap));
+
+        this._$translateButton.on('click', () => { this._performTranslation() });
+    }
+
+    _setupLangSelects(languagesMap) {
+        [this._$sourceLangSelect, this._$targetLangSelect].forEach($select =>
+            this._populateLangSelect($select, languagesMap)
+        )
+
+        this._$sourceLangSelect
+            .on('change', (event) => { this._onSourceLangChange(event.target.value) })
+            .change();
+
+        this._$targetLangSelect
+            .on('change', (event) => { this._onTargetLangChange(event.target.value) })
+            .change();
+    }
+
+    _populateLangSelect($select, languagesMap) {
+        for (const [name, code] of Object.entries(languagesMap)) {
+            $select.append($('<option/>', {
+                value: code,
+                text: name
+            }))
+        }
+    }
+
+    _onSourceLangChange(code) {
+        this._translator.setSourceLang(code);
+    }
+
+    _onTargetLangChange(code) {
+        this._translator.setTargetLang(code);
+    }
+
+    _performTranslation() {
+        const input = this._$inputBox.val();
+
+        this._translator.translate(input)
+            .then(translated => { this._$outputBox.val(translated) });
+    }
+}
