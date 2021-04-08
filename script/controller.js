@@ -324,9 +324,24 @@ class TranslatorController {
     }
 
     _performTranslation() {
+        this._showLoading();
+
         const input = this._$inputBox.val();
 
         this._translator.translate(input)
-            .then(translated => { this._$outputBox.val(translated) });
+            .then(translated => {
+                this._$outputBox.val(translated);
+                this._hideLoading();
+            });
+    }
+
+    _showLoading() {
+        this._$translateButton
+            .prop('disabled', true);
+    }
+
+    _hideLoading() {
+        this._$translateButton
+            .prop('disabled', false)
     }
 }
