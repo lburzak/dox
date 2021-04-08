@@ -24,6 +24,10 @@ function renderDeleteDoc() {
     })
 }
 
+function renderOption(text, value) {
+    return $('<option/>', { value, text })
+}
+
 function putMetadata($element, metadata) {
     $element.data("id", metadata.id);
 }

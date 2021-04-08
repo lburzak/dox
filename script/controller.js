@@ -311,10 +311,7 @@ class TranslatorController {
 
     _populateLangSelect($select, languagesMap) {
         for (const [name, code] of Object.entries(languagesMap)) {
-            $select.append($('<option/>', {
-                value: code,
-                text: name
-            }))
+            $select.append(renderOption(name, code))
         }
     }
 
