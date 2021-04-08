@@ -71,7 +71,11 @@ class DeepTranslator extends Translator {
 }
 
 class MockTranslator extends Translator {
+    _delayMilliseconds = 0;
+
     async getLanguages() {
+        await this._delay();
+
         return {
             "Reversed": "reverse",
             "Upper-case": "uppercase"
@@ -79,6 +83,8 @@ class MockTranslator extends Translator {
     }
 
     async translate(phrase) {
+        await this._delay();
+
         this._assertLangSelected();
 
         switch (this._targetLang) {
@@ -89,5 +95,14 @@ class MockTranslator extends Translator {
             default:
                 return phrase;
         }
+    }
+
+    withDelay(milliseconds) {
+        this._delayMilliseconds = milliseconds;
+        return this;
+    }
+
+    async _delay() {
+        return new Promise(resolve => setTimeout(resolve, this._delayMilliseconds))
     }
 }

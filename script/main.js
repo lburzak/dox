@@ -8,7 +8,7 @@ $(document).ready(function () {
     const trashBoxController = new TrashBoxController($('#trash-box'), scratchRepository);
     const docRowController = new DocRowController(editorController, docRepository);
     const scratchRowController = new ScratchRowController(trashBoxController);
-    const translator = new MockTranslator();
+    const translator = new MockTranslator().withDelay(1000);
     new TranslatorController($('#plugin-panel'), translator);
     new SidebarController($('#sidebar-tabs'), docRepository, scratchRepository, inputBoxController, listController, docRowController, scratchRowController);
 
