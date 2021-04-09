@@ -14,7 +14,9 @@ class SidebarController {
 
         $sidebarNav.on('click', 'button', (event) => {
             this._handleNavButtonClick($(event.target));
-        })
+        });
+
+        this._setupTab($('button.selected', $sidebarNav).attr('id'));
     }
 
     _handleNavButtonClick($elem) {
