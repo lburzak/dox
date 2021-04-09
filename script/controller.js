@@ -343,3 +343,18 @@ class TranslatorController {
             .prop('disabled', false)
     }
 }
+
+class PluginBarController {
+    constructor($bar, $panel) {
+        this.$bar = $bar;
+        this.$panel = $panel;
+
+        $('#show-translator', this.$bar).click(
+            () => this._onLaunchPlugin("translator")
+        );
+    }
+
+    _onLaunchPlugin() {
+        this.$panel.toggle();
+    }
+}
