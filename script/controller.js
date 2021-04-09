@@ -32,20 +32,25 @@ class SidebarController {
         let rowController;
         let repository;
         let multiline;
+        let placeholder;
 
         switch (tab) {
             case SidebarController._Tab.DOC:
                 rowController = this.docRowController;
                 repository = this.docRepository;
                 multiline = false;
+                placeholder = "New document...";
                 break;
             case SidebarController._Tab.SCRATCH:
                 rowController = this.scratchRowController;
                 repository = this.scratchRepository;
                 multiline = true;
+                placeholder = "New scratch...";
+                break;
         }
 
         this.inputBoxController.setMultiline(multiline);
+        this.inputBoxController.setPlaceholder(placeholder);
         this.inputBoxController.setOnSubmit(repository.createOne.bind(repository));
         this.listController.setRowController(rowController);
         this.listController.setSource(repository);
@@ -68,6 +73,10 @@ class InputBoxController {
 
     setOnSubmit(callback) {
         this._callback = callback;
+    }
+
+    setPlaceholder(text) {
+        this._$elem.attr('placeholder', text);
     }
 
     clear() {
