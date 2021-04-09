@@ -259,8 +259,6 @@ class TrashBoxController {
         $box.droppable({
             drop: (_, ui) => this._handleDrop(ui.draggable)
         });
-
-        this.hide();
     }
 
     show() {
