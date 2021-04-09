@@ -195,8 +195,6 @@ class RepositoryListController {
 }
 
 class EditorController {
-    currentDoc = null;
-
     constructor($textarea, scratchRepository, docRepository) {
         this.scratchRepository = scratchRepository;
         this.docRepository = docRepository;
@@ -207,6 +205,8 @@ class EditorController {
         });
 
         $textarea.on('change keyup paste', this.save.bind(this))
+
+        this._open(null);
     }
 
     get text() {
@@ -221,8 +221,7 @@ class EditorController {
         const doc = this.docRepository.findOne(id);
 
         if (doc !== undefined) {
-            this.currentDoc = doc;
-            this.text = doc.content;
+            this._open(doc);
         }
     }
 
@@ -230,6 +229,18 @@ class EditorController {
         if (this.currentDoc !== null) {
             this.currentDoc.content = this.text;
             this.docRepository.updateOne(this.currentDoc);
+        }
+    }
+
+    _open(doc) {
+        this.currentDoc = doc;
+
+        if (doc === null || doc === undefined) {
+            this.text = "No doc opened.";
+            this.$textarea.attr("disabled", true);
+        } else {
+            this.text = doc.content;
+            this.$textarea.attr("disabled", false);
         }
     }
 
