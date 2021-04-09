@@ -200,13 +200,17 @@ class EditorController {
         this.docRepository = docRepository;
         this.$textarea = $textarea;
 
+        this._close();
+
         $textarea.droppable({
             drop: this._handleDrop.bind(this)
         });
 
         $textarea.on('change keyup paste', this.save.bind(this))
 
-        this._open(null);
+        docRepository.subscribe(updatedCollection =>
+            this._handleDocsCollectionUpdate(updatedCollection)
+        )
     }
 
     get text() {
@@ -235,13 +239,15 @@ class EditorController {
     _open(doc) {
         this.currentDoc = doc;
 
-        if (doc === null || doc === undefined) {
-            this.text = "No doc opened.";
-            this.$textarea.attr("disabled", true);
-        } else {
-            this.text = doc.content;
-            this.$textarea.attr("disabled", false);
-        }
+        this.text = doc.content;
+        this.$textarea.attr("disabled", false);
+    }
+
+    _close() {
+        this.currentDoc = null;
+
+        this.text = "No doc opened.";
+        this.$textarea.attr("disabled", true);
     }
 
     _handleDrop(_, ui) {
@@ -257,6 +263,16 @@ class EditorController {
     _appendText(text) {
         this.text += text;
         this.$textarea.trigger('change');
+    }
+
+    _isDocOpened() {
+        return typeof this.currentDoc === "object";
+    }
+
+    _handleDocsCollectionUpdate(updatedCollection) {
+        if (this._isDocOpened() && !updatedCollection.includes(this.currentDoc)) {
+            this._close();
+        }
     }
 }
 
