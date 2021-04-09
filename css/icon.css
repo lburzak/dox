@@ -14,6 +14,12 @@
     height: 64px;
 }
 
+#plugin-panel .icon {
+    height: 100%;
+    background-size: 20px;
+    width: 40px;
+}
+
 .icon-doc {
     background-image: url("../assets/doc.svg");
 }
@@ -33,6 +39,10 @@
 
 .icon-translate {
     background-image: url("../assets/icon-translate.svg");
+}
+
+.icon-arrow {
+    background-image: url("../assets/icon-arrow.svg");
 }
 
 @media only screen and (max-device-width: 700px) {
