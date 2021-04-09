@@ -40,12 +40,12 @@
     background-color: hsl(0, 0%, 78%);
 }
 
-#plugin-panel.light-theme textarea,select,button {
+#plugin-panel.light-theme textarea, #plugin-panel.light-theme select, #plugin-panel.light-theme button {
     background-color: hsl(0, 0%, 100%);
     border-color: hsla(0, 0%, 0%, 0.1);
 }
 
-#plugin-panel.light-theme textarea:focus,select:focus,button:focus {
+#plugin-panel.light-theme textarea:focus, #plugin-panel.light-theme select:focus, #plugin-panel.light-theme button:focus {
     outline: lightblue solid 1px;
 }
 

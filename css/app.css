@@ -180,14 +180,14 @@
     padding: 16px;
 }
 
-#plugin-panel textarea,select,button {
+#plugin-panel textarea, #plugin-panel select, #plugin-panel button {
     flex: 1 1 auto;
     border-radius: 4px;
     border-width: 1px;
     resize: none;
 }
 
-#plugin-panel select,button {
+#plugin-panel select, #plugin-panel button {
     height: 2em;
 }
 
