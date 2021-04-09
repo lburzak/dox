@@ -169,13 +169,12 @@
 
 #plugin-panel {
     display: flex;
+    box-sizing: border-box;
     flex-direction: column;
     justify-content: center;
     width: 300px;
     border-left-width: 1px;
     border-left-style: solid;
-    border-bottom-width: 1px;
-    border-bottom-style: solid;
     padding: 16px;
 }
 
@@ -213,8 +212,16 @@
         flex-direction: column;
     }
 
-    #sidebar, #plugin-bar {
+    #sidebar, #plugin-bar, #plugin-panel {
         width: 100%;
+    }
+
+    #plugin-panel {
+        border-left-width: 0;
+        border-bottom-width: 1px;
+        border-bottom-style: solid;
+        border-top-width: 1px;
+        border-top-style: solid;
     }
 
     #plugin-bar {
