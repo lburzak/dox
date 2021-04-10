@@ -4,7 +4,8 @@ $(document).ready(function () {
 
     const listController = new RepositoryListController($('#sidebar-list'));
     const trashBoxController = new TrashBoxController($('#trash-box'), scratchRepository);
-    const editorController = new EditorController($('#editor textarea'), scratchRepository, docRepository, trashBoxController);
+    const titleController = new TitleController($('#app-title'));
+    const editorController = new EditorController($('#editor textarea'), scratchRepository, docRepository, trashBoxController, titleController);
 
     const $sidebarInput = $('#sidebar-input-box');
     const docServiceLookup = {

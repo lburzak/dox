@@ -16,7 +16,7 @@
 }
 
 #toolbar {
-    padding: 0 6px 0 6px;
+    padding: 0 16px 0 12px;
     height: 40px;
     box-shadow: hsla(0, 0%, 40%, 0.3) 0 0 4px 2px;
     border-bottom-width: 1px;
@@ -24,6 +24,10 @@
 
     display: flex;
     flex-direction: row;
+}
+
+#toolbar p {
+    font-weight: bold;
 }
 
 #sidebar {

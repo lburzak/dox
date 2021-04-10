@@ -276,11 +276,12 @@ class RepositoryListController {
 }
 
 class EditorController {
-    constructor($textarea, scratchRepository, docRepository, trashBoxController) {
+    constructor($textarea, scratchRepository, docRepository, trashBoxController, titleController) {
         this.scratchRepository = scratchRepository;
         this.docRepository = docRepository;
         this.$textarea = $textarea;
         this._trashBoxController = trashBoxController;
+        this._titleController = titleController;
 
         this._close();
 
@@ -323,6 +324,8 @@ class EditorController {
 
         this.text = doc.content;
         this.$textarea.attr("disabled", false);
+
+        this._titleController.onDocOpened(doc);
     }
 
     _close() {
@@ -330,6 +333,8 @@ class EditorController {
 
         this.text = "No doc opened.";
         this.$textarea.attr("disabled", true);
+
+        this._titleController.onDocClosed();
     }
 
     _handleDrop(_, ui) {
@@ -467,5 +472,21 @@ class PluginBarController {
 
     _onLaunchPlugin() {
         this.$panel.toggle();
+    }
+}
+
+class TitleController {
+    constructor($header) {
+        this._$header = $header;
+    }
+
+    onDocOpened(doc) {
+        document.title = `Dox - ${doc.title}`;
+        this._$header.attr('disabled', false).text(doc.title);
+    }
+
+    onDocClosed() {
+        document.title = `Dox`;
+        this._$header.attr('disabled', true).text(`Dox`);
     }
 }
