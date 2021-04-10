@@ -129,6 +129,8 @@ class RowController {
 }
 
 class DocRowController extends RowController {
+    _selectedId = -1;
+
     constructor(editorController, docRepository) {
         super();
         this._docRepository = docRepository;
@@ -137,6 +139,10 @@ class DocRowController extends RowController {
 
     makeRow(doc) {
         const $row = renderDoc(doc);
+
+        if (doc.id === this._selectedId)
+            $row.addClass('selected');
+
         $row.click(() => this._onSelectRow($row, doc.id));
         $row.hover(
             () => this._showTrashAction($row, doc.id),
@@ -150,6 +156,7 @@ class DocRowController extends RowController {
         $row.siblings().removeClass('selected');
         $row.addClass('selected');
 
+        this._selectedId = id;
         this._onRowClick(id);
     }
 
