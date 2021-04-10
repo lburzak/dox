@@ -1,11 +1,24 @@
 class SidebarController {
-    constructor($sidebarNav, listController, docServiceLookup, scratchServiceLookup) {
+    constructor($sidebar, narrowScreenQuery, listController, docServiceLookup, scratchServiceLookup) {
         this.docServiceLookup = docServiceLookup;
         this.scratchServiceLookup = scratchServiceLookup;
         this.listController = listController;
 
+        this.$sidebar = $sidebar;
+        const $sidebarNav = $('#sidebar-tabs', this.$sidebar);
+
         $sidebarNav.on('click', 'button', (event) => {
             this._handleNavButtonClick($(event.target));
+        });
+
+        if (!narrowScreenQuery.check())
+            this._enableResizable();
+
+        narrowScreenQuery.watch(isNarrow => {
+            if (isNarrow)
+                this._disableResizable();
+            else
+                this._enableResizable();
         });
 
         this._switchTab('show-docs');
@@ -49,6 +62,14 @@ class SidebarController {
 
     _tearDownTab() {
         this.serviceLookup?.inputBoxController?.detach();
+    }
+
+    _enableResizable() {
+        this.$sidebar.resizable({handles: 'e', minWidth: 200});
+    }
+
+    _disableResizable() {
+        this.$sidebar.resizable("destroy").css({'width': ''});
     }
 }
 

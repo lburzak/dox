@@ -18,24 +18,12 @@ $(document).ready(function () {
         inputBoxController: new ScratchInputBoxController($sidebarInput, scratchRepository)
     };
 
-    new SidebarController($('#sidebar-tabs'), listController, docServiceLookup, scratchServiceLookup);
+    const narrowScreenQuery = new NarrowScreenMediaQuery();
+
+    new SidebarController($('#sidebar'), narrowScreenQuery, listController, docServiceLookup, scratchServiceLookup);
 
     const $pluginPanel = $('#plugin-panel');
     const translator = new MockTranslator().withDelay(1000);
     new TranslatorController($pluginPanel, translator);
     new PluginBarController($('#plugin-bar'), $pluginPanel)
-
-    const narrowScreenQuery = new NarrowScreenMediaQuery();
-
-    if (!narrowScreenQuery.check()) {
-        $('#sidebar').resizable({handles: 'e'});
-    }
-
-    narrowScreenQuery.watch(isNarrow => {
-        console.log(isNarrow)
-        if (isNarrow)
-            $('#sidebar').resizable("destroy").css({'width': ''});
-        else
-            $('#sidebar').resizable({handles: 'e'});
-    })
 });
