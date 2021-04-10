@@ -2,13 +2,23 @@ $(document).ready(function () {
     const scratchRepository = new ScratchRepository(localStorage);
     const docRepository = new DocRepository(localStorage);
 
-    const inputBoxController = new InputBoxController($('#sidebar-input-box'));
     const listController = new RepositoryListController($('#sidebar-list'));
     const editorController = new EditorController($('#editor textarea'), scratchRepository, docRepository);
     const trashBoxController = new TrashBoxController($('#trash-box'), scratchRepository);
-    const docRowController = new DocRowController(editorController, docRepository);
-    const scratchRowController = new ScratchRowController(trashBoxController);
-    new SidebarController($('#sidebar-tabs'), docRepository, scratchRepository, inputBoxController, listController, docRowController, scratchRowController);
+
+    const $sidebarInput = $('#sidebar-input-box');
+    const docServiceLookup = {
+        listModel: new RepositoryListModel(docRepository),
+        rowController: new DocRowController(editorController, docRepository),
+        inputBoxController: new DocInputBoxController($sidebarInput, docRepository)
+    };
+    const scratchServiceLookup = {
+        listModel: new RepositoryListModel(scratchRepository),
+        rowController: new ScratchRowController(trashBoxController),
+        inputBoxController: new ScratchInputBoxController($sidebarInput, scratchRepository)
+    };
+
+    new SidebarController($('#sidebar-tabs'), listController, docServiceLookup, scratchServiceLookup);
 
     const $pluginPanel = $('#plugin-panel');
     const translator = new MockTranslator().withDelay(1000);
@@ -28,4 +38,4 @@ $(document).ready(function () {
         else
             $('#sidebar').resizable({handles: 'e'});
     })
-})
+});

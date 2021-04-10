@@ -1,99 +1,126 @@
 class SidebarController {
-    static _Tab = Object.freeze({
-        DOC: 'show-docs',
-        SCRATCH: 'show-scratches'
-    });
-
-    constructor($sidebarNav, docRepository, scratchRepository, inputBoxController, listController, docRowController, scratchRowController) {
-        this.docRepository = docRepository;
-        this.scratchRepository = scratchRepository;
-        this.inputBoxController = inputBoxController;
+    constructor($sidebarNav, listController, docServiceLookup, scratchServiceLookup) {
+        this.docServiceLookup = docServiceLookup;
+        this.scratchServiceLookup = scratchServiceLookup;
         this.listController = listController;
-        this.docRowController = docRowController;
-        this.scratchRowController = scratchRowController;
 
         $sidebarNav.on('click', 'button', (event) => {
             this._handleNavButtonClick($(event.target));
         });
 
-        this._setupTab($('button.selected', $sidebarNav).attr('id'));
+        this._switchTab('show-docs');
     }
 
     _handleNavButtonClick($elem) {
-        $elem.siblings().removeClass('selected');
-        $elem.addClass('selected');
+        this._markSelectedTab($elem);
+        const navId = $elem.attr('id');
 
-        const id = $elem.attr('id');
-
-        this._setupTab(id)
+        this._switchTab(navId);
     }
 
-    _setupTab(tab) {
-        let rowController;
-        let repository;
-        let multiline;
-        let placeholder;
+    _switchTab(navId) {
+        this._tearDownTab();
 
-        switch (tab) {
-            case SidebarController._Tab.DOC:
-                rowController = this.docRowController;
-                repository = this.docRepository;
-                multiline = false;
-                placeholder = "New document...";
+        switch (navId) {
+            case "show-docs":
+                this.serviceLookup = this.docServiceLookup;
                 break;
-            case SidebarController._Tab.SCRATCH:
-                rowController = this.scratchRowController;
-                repository = this.scratchRepository;
-                multiline = true;
-                placeholder = "New scratch...";
+            case "show-scratches":
+                this.serviceLookup = this.scratchServiceLookup;
                 break;
         }
 
-        this.inputBoxController.setMultiline(multiline);
-        this.inputBoxController.setPlaceholder(placeholder);
-        this.inputBoxController.setOnSubmit(repository.createOne.bind(repository));
+        this._setupTab();
+    }
+
+    _markSelectedTab($elem) {
+        $elem.siblings().removeClass('selected');
+        $elem.addClass('selected');
+    }
+
+    _setupTab() {
+        const { listModel, inputBoxController, rowController } = this.serviceLookup;
+
+        inputBoxController.attach();
+
         this.listController.setRowController(rowController);
-        this.listController.setSource(repository);
+        this.listController.setModel(listModel);
+    }
+
+    _tearDownTab() {
+        this.serviceLookup?.inputBoxController?.detach();
     }
 }
 
 class InputBoxController {
-    _multiline = false;
-    _callback = () => {};
+    _rows = 0;
+    _placeholder = "";
 
-    constructor($elem) {
-        this._$elem = $elem;
-        this._$elem.on('keypress', this._handleKey.bind(this));
+    constructor($textarea) {
+        this._$elem = $textarea;
     }
 
-    setMultiline(isMultiline) {
-        this._multiline = isMultiline;
-        this._$elem.attr('rows', (isMultiline) ? 3 : 1);
+    attach() {
+        this._$elem.attr('rows', this._rows);
+        this._$elem.attr('placeholder', this._placeholder);
+
+        this.keyHandler = this._handleKey.bind(this);
+        this._$elem.on('keypress', this.keyHandler);
     }
 
-    setOnSubmit(callback) {
-        this._callback = callback;
+    detach() {
+        this._$elem.off('keypress');
     }
 
-    setPlaceholder(text) {
-        this._$elem.attr('placeholder', text);
-    }
+    _onSubmit(text) {}
 
     clear() {
         this._$elem.val("");
     }
 
+    _isMultiline() {
+        return this._rows > 1;
+    }
+
     _shouldHandleSubmit(event) {
-        return isEnterPressed(event) && (!this._multiline || isCtrlPressed(event));
+        return isEnterPressed(event) && (!this._isMultiline() || isCtrlPressed(event));
     }
 
     _handleKey(event) {
         if (this._shouldHandleSubmit(event)) {
-            this._callback(this._$elem.val())
+            this._onSubmit(this._$elem.val())
             this.clear();
 
             return false;
         }
+    }
+}
+
+class DocInputBoxController extends InputBoxController {
+    _rows = 1;
+    _placeholder = "New document...";
+
+    constructor($textarea, docRepository) {
+        super($textarea);
+        this.docRepository = docRepository;
+    }
+
+    _onSubmit(text) {
+        this.docRepository.createOne(text);
+    }
+}
+
+class ScratchInputBoxController extends InputBoxController {
+    _rows = 3;
+    _placeholder = "New scratch...";
+
+    constructor($textarea, scratchRepository) {
+        super($textarea);
+        this.scratchRepository = scratchRepository;
+    }
+
+    _onSubmit(text) {
+        this.scratchRepository.createOne(text);
     }
 }
 
@@ -173,22 +200,37 @@ class ScratchRowController extends RowController {
     }
 }
 
-class RepositoryListController {
-    _unsubscribe = () => {};
+class RepositoryListModel {
+    constructor(repository) {
+        extendWithEmitter(this);
 
+        repository.subscribe(entities => { this._setEntities(entities); })
+    }
+
+    getEntities() {
+        return this._entities;
+    }
+
+    _setEntities(entities) {
+        this._entities = [...entities];
+        this.emit("update");
+    }
+}
+
+class RepositoryListController {
     constructor($list) {
         this.$list = $list;
     }
 
-    setSource(repository) {
-        this._unsubscribe();
+    setModel(model) {
+        this.model?.off("update");
+        this.model = model;
 
-        this._repository = repository;
+        this._populateList(this.model.getEntities());
 
-        this._unsubscribe =
-            repository.subscribe(entities =>
-                this._populateList(entities)
-            );
+        this.model.on("update", () => {
+            this._populateList(this.model.getEntities());
+        })
     }
 
     setRowController(rowController) {
