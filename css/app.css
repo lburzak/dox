@@ -16,7 +16,7 @@
 }
 
 #toolbar {
-    padding: 0 16px 0 12px;
+    padding: 0 4px 0 16px;
     height: 40px;
     box-shadow: hsla(0, 0%, 40%, 0.3) 0 0 4px 2px;
     border-bottom-width: 1px;
