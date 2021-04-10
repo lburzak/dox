@@ -98,6 +98,10 @@
     flex-shrink: 0;
 }
 
+.file-row {
+    user-select: none;
+}
+
 #editor {
     position: relative;
     flex-shrink: 40;
