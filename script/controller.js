@@ -276,10 +276,11 @@ class RepositoryListController {
 }
 
 class EditorController {
-    constructor($textarea, scratchRepository, docRepository) {
+    constructor($textarea, scratchRepository, docRepository, trashBoxController) {
         this.scratchRepository = scratchRepository;
         this.docRepository = docRepository;
         this.$textarea = $textarea;
+        this._trashBoxController = trashBoxController;
 
         this._close();
 
@@ -339,6 +340,8 @@ class EditorController {
             this.scratchRepository.removeOne(id);
             this._appendText(scratch.content);
         }
+
+        this._trashBoxController.hide();
     }
 
     _appendText(text) {

@@ -3,8 +3,8 @@ $(document).ready(function () {
     const docRepository = new DocRepository(localStorage);
 
     const listController = new RepositoryListController($('#sidebar-list'));
-    const editorController = new EditorController($('#editor textarea'), scratchRepository, docRepository);
     const trashBoxController = new TrashBoxController($('#trash-box'), scratchRepository);
+    const editorController = new EditorController($('#editor textarea'), scratchRepository, docRepository, trashBoxController);
 
     const $sidebarInput = $('#sidebar-input-box');
     const docServiceLookup = {
