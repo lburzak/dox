@@ -6,16 +6,14 @@ function renderScratchDragHelper() {
 
 function renderScratch(content) {
     return $("<div/>", {
-        class: "light-theme card",
-        html: content
-    });
+        class: "light-theme card"
+    }).text(content);
 }
 
 function renderDoc(doc) {
     return $("<div/>", {
-        class: "light-theme file-row",
-        html: doc.title
-    })
+        class: "light-theme file-row"
+    }).text(doc);
 }
 
 function renderDeleteDoc() {
