@@ -197,6 +197,12 @@
     gap: 12px;
 }
 
+#plugin-panel .row select {
+    width: 20px;
+    overflow: auto;
+    flex: 1;
+}
+
 #plugin-panel .column {
     display: flex;
     flex-direction: column;
