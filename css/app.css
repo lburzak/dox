@@ -84,11 +84,18 @@
     justify-content: space-between;
 }
 
+.file-row span {
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
 .file-row .icon {
     display: inline-block;
     background-size: 20px;
     height: 100% !important;
     width: 20px;
+    flex-shrink: 0;
 }
 
 #editor {

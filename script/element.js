@@ -13,7 +13,7 @@ function renderScratch(content) {
 function renderDoc(doc) {
     return $("<div/>", {
         class: "light-theme file-row"
-    }).text(doc.title);
+    }).append($("<span/>").text(doc.title));
 }
 
 function renderDeleteDoc() {
