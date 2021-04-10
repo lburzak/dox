@@ -338,6 +338,9 @@ class EditorController {
     }
 
     _handleDrop(_, ui) {
+        if (!this._isDocOpened())
+            return false;
+
         const {id} = retrieveMetadata(ui.draggable);
         const scratch = this.scratchRepository.findOne(id);
 
@@ -355,7 +358,7 @@ class EditorController {
     }
 
     _isDocOpened() {
-        return typeof this.currentDoc === "object";
+        return this.currentDoc !== undefined && this.currentDoc !== null && typeof this.currentDoc === "object";
     }
 
     _handleDocsCollectionUpdate(updatedCollection) {
