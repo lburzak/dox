@@ -228,15 +228,29 @@
         width: 100%;
     }
 
+    #toolbar {
+        border-right-width: 0;
+    }
+
+    #sidebar {
+        border-right-width: 0;
+        box-shadow: 0 2px 4px 1px hsla(0, 0%, 40%, 0.3);
+    }
+
+    #plugin-bar, #plugin-panel {
+        box-shadow: 0 -1px 4px 1px hsla(0, 0%, 40%, 0.3);
+    }
+
     #plugin-panel {
         border-left-width: 0;
-        border-bottom-width: 1px;
+        border-bottom-width: 0;
         border-bottom-style: solid;
         border-top-width: 1px;
         border-top-style: solid;
     }
 
     #plugin-bar {
+        border-bottom-width: 0;
         flex-direction: row;
     }
 }
