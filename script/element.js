@@ -1,7 +1,7 @@
 function renderScratchDragHelper() {
     return $("<div/>", {
         class: "icon icon-scratch"
-    })
+    }).css('z-index', 3)
 }
 
 function renderScratch(content) {
