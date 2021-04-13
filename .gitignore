@@ -1,5 +1,5 @@
 .idea/
 .env
 
-lib/jquery.ui.touch-punch.js
-script/rapidapi.js
+public/lib/jquery.ui.touch-punch.js
+public/script/rapidapi.js
