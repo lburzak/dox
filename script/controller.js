@@ -207,7 +207,8 @@ class ScratchRowController extends RowController {
         cursorAt: {
             top: 30,
             left: 30
-        }
+        },
+        containment: 'window'
     })
 
     constructor(trashBoxController) {
