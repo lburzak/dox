@@ -31,6 +31,14 @@
     font-weight: bold;
 }
 
+#toolbar a {
+    margin-left: auto;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-right: 12px;
+}
+
 #sidebar {
     width: 200px;
     border-right-width: 1px;

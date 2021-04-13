@@ -60,3 +60,12 @@
 #trash-box.icon:hover, #trash-box.icon:focus {
     filter: var(--filter-red);
 }
+
+a:link, a:visited {
+    color: hsl(0, 0%, 10%);
+    text-decoration: none;
+}
+
+a:hover {
+    filter: var(--filter-blue);
+}
