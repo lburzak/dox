@@ -8,7 +8,7 @@ function isCtrlPressed(event) {
 
 class NarrowScreenMediaQuery {
     constructor() {
-        this._query = window.matchMedia("only screen and (max-device-width: 40em)");
+        this._query = window.matchMedia("only screen and (max-width: 40em)");
     }
     
     check() {

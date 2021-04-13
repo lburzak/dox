@@ -5,7 +5,7 @@
     --filter-red: invert(21%) sepia(42%) saturate(6259%) hue-rotate(343deg) brightness(76%) contrast(119%);
 }
 
-#toolbar.light-theme p[disabled] {
+#toolbar.light-theme .disabled {
     color: hsl(0, 0%, 60%);
 }
 

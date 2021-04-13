@@ -84,7 +84,6 @@
 
 .file-row {
     height: auto;
-    max-lines: 1;
     padding: 8px;
 
     display: flex;
@@ -239,7 +238,7 @@
     padding: 6px;
 }
 
-@media only screen and (max-device-width: 700px) {
+@media only screen and (max-width: 700px) {
     #main {
         flex-direction: column;
     }

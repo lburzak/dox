@@ -486,11 +486,11 @@ class TitleController {
 
     onDocOpened(doc) {
         document.title = `Dox - ${doc.title}`;
-        this._$header.attr('disabled', false).text(doc.title);
+        this._$header.removeClass('disabled').text(doc.title);
     }
 
     onDocClosed() {
         document.title = `Dox`;
-        this._$header.attr('disabled', true).text(`Dox`);
+        this._$header.addClass('disabled').text(`Dox`);
     }
 }
