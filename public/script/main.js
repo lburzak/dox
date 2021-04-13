@@ -24,7 +24,7 @@ $(document).ready(function () {
     new SidebarController($('#sidebar'), narrowScreenQuery, listController, docServiceLookup, scratchServiceLookup);
 
     const $pluginPanel = $('#plugin-panel');
-    const translator = new MockTranslator().withDelay(1000);
+    const translator = new DeepTranslator();
     new TranslatorController($pluginPanel, translator);
     new PluginBarController($('#plugin-bar'), $pluginPanel)
 });
