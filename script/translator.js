@@ -19,18 +19,23 @@ class Translator {
 }
 
 class DeepTranslator extends Translator {
+    static URL = "https://deep-translate1.p.rapidapi.com";
     static ENDPOINT_TRANSLATE = "/language/translate/v2";
     static ENDPOINT_LANGUAGES = "/language/translate/v2/languages";
+    static AUTH_HEADERS = {
+        "x-rapidapi-key": `${DEEPTRANSLATE_API_KEY}`,
+        "x-rapidapi-host": "deep-translate1.p.rapidapi.com"
+    };
 
-    constructor(api) {
+    constructor() {
         super();
         this.headers = {
             "content-type": "application/json",
-            ...api.authHeaders
+            ...DeepTranslator.AUTH_HEADERS
         };
 
-        this._translateEndpoint = new URL(DeepTranslator.ENDPOINT_TRANSLATE, api.url).toString();
-        this._languageEndpoint = new URL(DeepTranslator.ENDPOINT_LANGUAGES, api.url).toString();
+        this._translateEndpoint = new URL(DeepTranslator.ENDPOINT_TRANSLATE, DeepTranslator.URL).toString();
+        this._languageEndpoint = new URL(DeepTranslator.ENDPOINT_LANGUAGES, DeepTranslator.URL).toString();
     }
 
     async getLanguages() {
