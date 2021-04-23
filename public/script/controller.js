@@ -402,6 +402,8 @@ class TranslatorController {
     constructor($panel, translator) {
         this._translator = translator;
 
+        this._errorOccurred = false;
+
         this._$sourceLangSelect = $('#translator-source-lang', $panel);
         this._$targetLangSelect = $('#translator-target-lang', $panel);
         this._$inputBox = $('#translator-input', $panel);
@@ -409,6 +411,12 @@ class TranslatorController {
         this._$translateButton = $('#translator-translate', $panel);
 
         this._translator.getLanguages().then(languagesMap => this._setupLangSelects(languagesMap));
+
+
+        this._$inputBox.on('change keyup paste', () => {
+            if (this._errorOccurred)
+                this._hideError()
+        });
 
         this._$translateButton.on('click', () => { this._performTranslation() });
     }
@@ -442,6 +450,11 @@ class TranslatorController {
     }
 
     _performTranslation() {
+        if (this._$inputBox.val() === "") {
+            this._showError("Unable to translate: no input.");
+            return;
+        }
+
         this._showLoading();
 
         const input = this._$inputBox.val();
@@ -461,6 +474,20 @@ class TranslatorController {
     _hideLoading() {
         this._$translateButton
             .prop('disabled', false)
+    }
+
+    _showError(message) {
+        this._errorOccurred = true;
+        this._$outputBox.val(message);
+        this._$inputBox.addClass('error-box')
+        this._$outputBox.addClass('error-msg');
+    }
+
+    _hideError() {
+        this._$outputBox.val("");
+        this._$inputBox.removeClass('error-box')
+        this._$outputBox.removeClass('error-msg');
+        this._errorOccurred = false;
     }
 }
 
