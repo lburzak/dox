@@ -239,7 +239,7 @@
     height: 2em;
 }
 
-#plugin-panel .row {
+.row {
     display: flex;
     flex-direction: row;
     gap: 12px;
@@ -251,9 +251,12 @@
     flex: 1;
 }
 
-#plugin-panel .column {
+.column {
     display: flex;
     flex-direction: column;
+}
+
+#plugin-panel .column {
     gap: 12px;
     margin: 24px 0 24px 0;
 }
@@ -269,6 +272,67 @@
 
 .error-msg {
     color: red;
+}
+
+#dialog-overlay {
+    position: absolute;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    z-index: 20;
+    background-color: hsla(255, 100%, 100%, 0.8);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+#dialog-contact-us {
+    width: 400px;
+    display: flex;
+    padding: 24px;
+    row-gap: 24px;
+    justify-content: space-between;
+    align-items: center;
+    background-color: white;
+    box-shadow: hsla(0, 0%, 40%, 0.3) 0 2px 4px 2px;
+    border-radius: 4px;
+    flex-direction: column;
+}
+
+#dialog-contact-us header {
+    font-weight: bold;
+    font-size: x-large;
+}
+
+#form-contact-us {
+    display: flex;
+    flex-direction: column;
+    row-gap: 6px;
+}
+
+#form-contact-us input, #form-contact-us select {
+    flex: 1 1 auto;
+}
+
+#form-contact-us label, #form-contact-us input, #form-contact-us select {
+    vertical-align: center;
+    height: 2em;
+}
+
+#form-contact-us select {
+    overflow: auto;
+    flex: 1;
+}
+
+#form-contact-us label {
+    display: block;
+    line-height: 2em;
+    width: 80px;
+}
+
+#form-contact-us .row {
+    align-items: center;
 }
 
 @media only screen and (max-width: 700px) {
@@ -314,5 +378,9 @@
 
     #info-menu {
         left: 4px;
+    }
+
+    #dialog-contact-us {
+        width: 80%;
     }
 }

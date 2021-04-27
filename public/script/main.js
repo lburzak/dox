@@ -29,8 +29,19 @@ $(document).ready(function () {
     new PluginBarController($('#plugin-bar'), $pluginPanel)
 
     $('#info').hover(function () {
-        $('#info-menu').toggleClass('hidden')
-    })
+        $('#info-menu').toggleClass('hidden');
+    });
 
-
+    $('#dialog-overlay').click(function (e) {
+        if (e.target === this)
+            hideContactUs()
+    });
 });
+
+function showContactUs() {
+    $('#dialog-overlay').removeClass('hidden');
+}
+
+function hideContactUs() {
+    $('#dialog-overlay').addClass('hidden');
+}
