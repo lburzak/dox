@@ -27,4 +27,10 @@ $(document).ready(function () {
     const translator = new MockTranslator().withDelay(60);
     new TranslatorController($pluginPanel, translator);
     new PluginBarController($('#plugin-bar'), $pluginPanel)
+
+    $('#info').hover(function () {
+        $('#info-menu').toggleClass('hidden')
+    })
+
+
 });
