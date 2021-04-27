@@ -311,4 +311,8 @@
         border-bottom-width: 0;
         flex-direction: row;
     }
+
+    #info-menu {
+        left: 4px;
+    }
 }
